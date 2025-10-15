@@ -1,7 +1,7 @@
 import './App.css'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
-import Teams from './components/Teams'
+import Teams from './pages/Teams'
 
 function App() {
   const title = 'REACT'
