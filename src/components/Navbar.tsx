@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Navbar() {
   return (
     <div>
@@ -9,10 +11,10 @@ function Navbar() {
           </div>
 
           <div className="flex space-x-6">
-            <a href="#" className="hover:text-gray-400">Accueil</a>
-            <a href="#" className="hover:text-gray-400">Pokemons</a>
-            <a href="#" className="hover:text-gray-400">À propos</a>
-            <a href="#" className="hover:text-gray-400">Contact</a>
+            <Link to="/" className="hover:text-gray-400">Accueil</Link>
+            <Link to="/about" className="hover:text-gray-400">À propos</Link>
+            <Link to="/contact" className="hover:text-gray-400">Contact</Link>
+            <Link to="/team" className="hover:text-gray-400">Équipe Pokémon</Link>
           </div>
         </div>
       </nav>

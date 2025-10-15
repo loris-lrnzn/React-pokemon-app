@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Pokemon from "../models/pokemon";
 import getTypeColor from "../helpers/getTypeColor";
 import formatDate from "../helpers/formatDate";
@@ -17,6 +18,7 @@ export default function PokemonCard({
     borderColor = "#666666",
 }: Props) {
     const [isHovered, setIsHovered] = useState(false);
+    const navigate = useNavigate();
 
     const cardBgColor = getTypeColor(pokemon.types[0]);
 
@@ -61,6 +63,13 @@ export default function PokemonCard({
                     title="Épingler"
                 >
                     &#128204;
+                </button>
+                <button
+                    onClick={() => navigate(`/pokemonDetail/${pokemon.id}`)}
+                    className="text-blue-600 hover:text-blue-800 text-xl"
+                    title="Détail"
+                >
+                    Détail
                 </button>
             </div>
         </div>
