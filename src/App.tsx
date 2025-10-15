@@ -7,6 +7,7 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import Teams from './pages/Teams'
 import PokemonDetail from './pages/PokemonDetail'
+import PokemonEdit from './pages/PokemonEdit'
 import NotFound from './pages/NotFound'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/team" element={<Teams />} />
           <Route path="/pokemonDetail/:id" element={<PokemonDetail />} />
+          <Route path="/pokemonEdit/:id" element={<PokemonEdit />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

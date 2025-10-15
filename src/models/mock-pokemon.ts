@@ -111,12 +111,82 @@ export const POKEMONS: Pokemon[] = [
         created: new Date()
     },
     {
-        id: 12,
-        name: "Groupix",
+        id: 13,
+        name: "Goupix",
         hp: 17,
         cp: 8,
         picture:
             "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/037.png",
+        types: ["Feu"],
+        created: new Date()
+    },
+    {
+        id: 14,
+        name: "Nosferapti",
+        hp: 18,
+        cp: 5,
+        picture:
+            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/041.png",
+        types: ["Poison", "Vol"],
+        created: new Date()
+    },
+    {
+        id: 15,
+        name: "Mystherbe",
+        hp: 20,
+        cp: 6,
+        picture:
+            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/043.png",
+        types: ["Plante", "Poison"],
+        created: new Date()
+    },
+    {
+        id: 16,
+        name: "Paras",
+        hp: 15,
+        cp: 4,
+        picture:
+            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/046.png",
+        types: ["Insecte", "Plante"],
+        created: new Date()
+    },
+    {
+        id: 17,
+        name: "Mimitoss",
+        hp: 22,
+        cp: 5,
+        picture:
+            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/048.png",
+        types: ["Insecte", "Poison"],
+        created: new Date()
+    },
+    {
+        id: 18,
+        name: "Psykokwak",
+        hp: 23,
+        cp: 7,
+        picture:
+            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/054.png",
+        types: ["Eau"],
+        created: new Date()
+    },
+    {
+        id: 19,
+        name: "Ferosinge",
+        hp: 20,
+        cp: 6,
+        picture:
+            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/056.png",
+        types: ["Combat"],
+        created: new Date()
+    },
+    {
+        id: 20,
+        name: "Caninos",
+        hp: 21,
+        cp: 8,
+        picture:
+            "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/058.png",
         types: ["Feu"],
         created: new Date()
     }
