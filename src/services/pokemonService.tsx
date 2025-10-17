@@ -1,6 +1,6 @@
 import type Pokemon from "../models/pokemon";
 
-const API_BASE = "http://localhost:3001/pokemons";
+const API_BASE = "http://127.0.0.1:8000/api/pokemons";
 
 export default class PokemonService {
     static async getPokemons(): Promise<Pokemon[]> {
