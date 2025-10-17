@@ -1,44 +1,25 @@
-const getTypeColor = (type: string) => {
-    switch (type) {
-        case "Plante":
-            return "bg-green-200";
-        case "Poison":
-            return "bg-purple-200";
-        case "Eau":
-            return "bg-blue-200";
-        case "Feu":
-            return "bg-red-200";
-        case "Electrik":
-            return "bg-yellow-200";
-        case "Vol":
-            return "bg-indigo-200";
-        case "Insecte":
-            return "bg-lime-200";
-        case "Normal":
-            return "bg-gray-200";
-        case "Sol":
-            return "bg-yellow-700";
-        case "Roche":
-            return "bg-yellow-900";
-        case "Spectre":
-            return "bg-violet-400";
-        case "Acier":
-            return "bg-gray-400";
-        case "Combat":
-            return "bg-orange-300";
-        case "Psy":
-            return "bg-pink-200";
-        case "Glace":
-            return "bg-cyan-200";
-        case "Dragon":
-            return "bg-purple-400";
-        case "Ténèbres":
-            return "bg-gray-800 text-white";
-        case "Fée":
-            return "bg-pink-300";
-        default:
-            return "bg-gray-100";
-    }
+const MAP: Record<string, string> = {
+    Normal: "bg-gray-200 text-gray-800",
+    Plante: "bg-green-100 text-green-800",
+    Feu: "bg-red-100 text-red-800",
+    Eau: "bg-blue-100 text-blue-800",
+    Poison: "bg-purple-100 text-purple-800",
+    Vol: "bg-indigo-100 text-indigo-800",
+    Insecte: "bg-lime-100 text-lime-800",
+    Acier: "bg-gray-400 text-gray-800",
+    Combat: "bg-orange-300 text-orange-800",
+    Psy: "bg-pink-200 text-pink-800",
+    Glace: "bg-cyan-200 text-cyan-800",
+    Dragon: "bg-purple-400 text-purple-800",
+    Ténèbres: "bg-gray-800 text-white",
+    Fée: "bg-pink-300 text-pink-800",
+    Electrik: "bg-yellow-100 text-yellow-800",
+    Sol: "bg-yellow-300 text-yellow-800",
+    Roche: "bg-yellow-600 text-yellow-900",
+    Spectre: "bg-purple-300 text-purple-900",
 };
 
-export default getTypeColor;
+export const TYPES = Object.keys(MAP);
+export default function getTypeColor(type: string) {
+    return MAP[type] ?? "bg-gray-100 text-gray-800";
+}

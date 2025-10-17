@@ -1,24 +1,56 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import POKEMONS from "../models/mock-pokemon";
-import getTypeColor from "../helpers/getTypeColor";
-
-const ALL_TYPES = Array.from(
-    new Set(POKEMONS.flatMap((p) => p.types))
-);
+import { useEffect, useState } from "react";
+import getTypeColor, { TYPES as HELPER_TYPES } from "../helpers/getTypeColor";
+import PokemonService from "../services/pokemonService";
+import type Pokemon from "../models/pokemon";
 
 export default function PokemonEdit() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const pokemon = POKEMONS.find(p => p.id === Number(id));
-    const [form, setForm] = useState(
-        pokemon
-            ? { name: pokemon.name, hp: pokemon.hp, cp: pokemon.cp, types: [...pokemon.types] }
-            : { name: "", hp: 0, cp: 0, types: [] as string[] }
-    );
-    const [message, setMessage] = useState("");
 
-    if (!pokemon) return <div>Pokémon introuvable.</div>;
+    const [pokemon, setPokemon] = useState<any | null>(null);
+    const [form, setForm] = useState({
+        name: "",
+        hp: 0,
+        cp: 0,
+        types: [] as string[],
+    });
+    const [message, setMessage] = useState("");
+    const [allTypes, setAllTypes] = useState<string[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!id) return;
+        let mounted = true;
+        setLoading(true);
+        (async () => {
+            const p = await PokemonService.getPokemon(Number(id));
+            if (!mounted) return;
+            if (p) {
+                setPokemon(p);
+                setForm({
+                    name: p.name || "",
+                    hp: p.hp || 0,
+                    cp: p.cp || 0,
+                    types: Array.isArray(p.types) ? [...p.types] : [],
+                });
+            } else {
+                setPokemon(null);
+            }
+            if (mounted) setLoading(false);
+        })();
+        return () => { mounted = false; };
+    }, [id]);
+
+    useEffect(() => {
+        if (Array.isArray(HELPER_TYPES) && HELPER_TYPES.length > 0) {
+            setAllTypes(HELPER_TYPES);
+            return;
+        }
+    }, []);
+
+    if (loading) return <div className="p-8 text-center">Chargement…</div>;
+    if (!pokemon) return <div className="p-8 text-center">Pokémon introuvable.</div>;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -34,16 +66,29 @@ export default function PokemonEdit() {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        pokemon.name = form.name;
-        pokemon.hp = form.hp;
-        pokemon.cp = form.cp;
-        pokemon.types = [...form.types];
+        setLoading(true);
+
+        const updatedPokemon = {
+            ...pokemon,
+            name: form.name,
+            hp: form.hp,
+            cp: form.cp,
+            types: [...form.types],
+        };
+
+        const saved = await PokemonService.updatePokemon(updatedPokemon as Pokemon);
+        setLoading(false);
+
+        if (!saved) {
+            setMessage("Erreur lors de la sauvegarde.");
+            return;
+        }
+
+        setPokemon(saved);
         setMessage("✅ Modifications enregistrées !");
-        setTimeout(() => {
-            navigate(`/pokemonDetail/${pokemon.id}`);
-        }, 1000);
+        setTimeout(() => navigate(`/pokemonDetail/${id}`), 800);
     };
 
     return (
@@ -88,7 +133,7 @@ export default function PokemonEdit() {
                 <div>
                     <span className="font-semibold">Types :</span>
                     <div className="flex flex-wrap gap-3 mt-2">
-                        {ALL_TYPES.map((type) => (
+                        {allTypes.map((type) => (
                             <label key={type} className="flex items-center gap-1 cursor-pointer">
                                 <input
                                     type="checkbox"

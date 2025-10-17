@@ -1,49 +1,55 @@
-import { useState } from "react";
-import POKEMONS from "../models/mock-pokemon";
+import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import PokemonCard from "../components/PokemonCard";
 import PokemonSearch from "../components/PokemonSearch";
+import PokemonService from "../services/pokemonService";
+import type Pokemon from "../models/pokemon";
+import { TYPES as ALL_TYPES } from "../helpers/getTypeColor";
 
-const ALL_TYPES = Array.from(
-    new Set(POKEMONS.flatMap((p) => p.types))
-);
+export default function Teams() {
+    const [visiblePokemons, setVisiblePokemons] = useState<Pokemon[]>([]);
 
-function Teams() {
-    const [visiblePokemons, setVisiblePokemons] = useState(POKEMONS);
+    const load = useCallback(async () => {
+        const list = await PokemonService.getPokemons();
+        setVisiblePokemons(list);
+    }, []);
 
-    const handleRemove = (id: number) => {
-        setVisiblePokemons(
-            visiblePokemons.filter((pokemon) => pokemon.id !== id)
-        );
-    };
+    useEffect(() => { load(); }, [load]);
 
-    const handleSearch = (name: string, type: string) => {
-        setVisiblePokemons(
-            POKEMONS.filter((pokemon) => {
-                const matchName = pokemon.name.toLowerCase().includes(name.toLowerCase());
-                const matchType = type ? pokemon.types.includes(type) : true;
-                return matchName && matchType;
-            })
-        );
-    };
+    const handleRemove = useCallback(async (id: number) => {
+        const ok = await PokemonService.deletePokemon(id);
+        if (ok) {
+            setVisiblePokemons(prev => prev.filter(p => p.id !== id));
+        } else {
+            alert("Impossible de supprimer le Pokémon.");
+        }
+    }, []);
+
+    const handleSearch = useCallback(async (name: string, type: string) => {
+        const results = await PokemonService.searchPokemons(name, type || undefined);
+        setVisiblePokemons(results);
+    }, []);
 
     return (
         <div className="mx-auto flex flex-col justify-center items-center py-4">
-            <h1 className="text-3xl font-bold">Notre Équipe</h1>
-            <h2 className="text-2xl font-semibold mb-4">
-                {visiblePokemons.length} cartes Pokémon
-            </h2>
+            <div className="w-full max-w-4xl flex items-center justify-between mb-4 px-2">
+                <div>
+                    <h1 className="text-3xl font-bold">Notre Équipe</h1>
+                    <h2 className="text-2xl font-semibold">{visiblePokemons.length} cartes Pokémon</h2>
+                </div>
+
+                <Link to="/pokemonCreate" className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">
+                    + Créer un Pokémon
+                </Link>
+            </div>
+
             <PokemonSearch types={ALL_TYPES} onSearch={handleSearch} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {visiblePokemons.map((pokemon) => (
-                    <PokemonCard
-                        key={pokemon.id}
-                        pokemon={pokemon}
-                        removePokemon={handleRemove}
-                    />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {visiblePokemons.map(pokemon => (
+                    <PokemonCard key={pokemon.id} pokemon={pokemon} removePokemon={handleRemove} />
                 ))}
             </div>
         </div>
     );
 }
-
-export default Teams;

@@ -6,7 +6,7 @@ function Navbar() {
         <nav className="bg-gray-900 text-white hidden md:block px-4">
         <div className="max-w-6xl mx-auto flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
-            <img src="./public/pikachu.png" alt="pokemon" className="w-10"/>
+            <img src="pikachu.png" alt="pokemon" className="w-10"/>
             <a href="#" className="text-xl font-bold">React Pokemon App</a>
           </div>
 

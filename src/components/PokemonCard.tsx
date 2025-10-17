@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Pokemon from "../models/pokemon";
 import getTypeColor from "../helpers/getTypeColor";
-import formatDate from "../helpers/formatDate";
 
 
 
@@ -48,7 +47,6 @@ export default function PokemonCard({
                 ))}
             </div>
             <p className="text-black">
-                <small>{formatDate(pokemon.created)}</small>
             </p>
             <div className="flex gap-2 mt-4">
                 <button
