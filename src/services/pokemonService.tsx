@@ -1,17 +1,15 @@
 import type Pokemon from "../models/pokemon";
+import AuthentificationService from "./authentificationService";
 
 const API_BASE = "http://127.0.0.1:8000/api/pokemons";
 
 export default class PokemonService {
     static async getPokemons(): Promise<Pokemon[]> {
-        console.log('token0', localStorage.getItem("authToken"));
         try {
-            console.log('token', localStorage.getItem("authToken"));
             const token = localStorage.getItem("authToken");
             const res = await fetch(API_BASE, {
                 headers: token ? { Authorization: `Bearer ${token}` } : undefined,
             });
-            console.log('response', res);
             if (!res.ok) {
                 console.error("getPokemons failed", res.status);
                 return [];
@@ -25,7 +23,10 @@ export default class PokemonService {
 
     static async getPokemon(id: number): Promise<Pokemon | null> {
         try {
-            const res = await fetch(`${API_BASE}/${id}`);
+            const token = localStorage.getItem("authToken");
+            const res = await fetch(`${API_BASE}/${id}`, {
+                headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+            });
             if (res.status === 404) return null;
             if (!res.ok) {
                 console.error("getPokemon failed", res.status);
@@ -46,9 +47,13 @@ export default class PokemonService {
 
     static async addPokemon(pokemon: Pokemon): Promise<Pokemon | null> {
         try {
+            
+            const token = localStorage.getItem("authToken");
             const res = await fetch(API_BASE, {
+                headers: token
+                    ? { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }
+                    : { "Content-Type": "application/json" },
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(pokemon),
             });
             if (!res.ok) {
@@ -68,9 +73,12 @@ export default class PokemonService {
             return null;
         }
         try {
+            const token = localStorage.getItem("authToken");
             const res = await fetch(`${API_BASE}/${pokemon.id}`, {
+                headers: token
+                    ? { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }
+                    : { "Content-Type": "application/json" },
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(pokemon),
             });
             if (!res.ok) {
@@ -86,11 +94,28 @@ export default class PokemonService {
 
     static async deletePokemon(id: number): Promise<boolean> {
         try {
-            const res = await fetch(`${API_BASE}/${id}`, { method: "DELETE" });
+            const token = localStorage.getItem("authToken");
+            const headers: Record<string,string> = token
+                ? { Authorization: `Bearer ${token}` }
+                : {};
+
+            const res = await fetch(`${API_BASE}/${id}`, {
+                method: "DELETE",
+                headers
+            });
+
+            if (res.status === 401 || res.status === 403) {
+                console.error("deletePokemon unauthorized", res.status);
+                // optionnel : forcer la déconnexion si le token est invalide
+                // AuthentificationService.logout();
+                return false;
+            }
+
             if (!res.ok) {
                 console.error("deletePokemon failed", res.status);
                 return false;
             }
+
             return true;
         } catch (err) {
             console.error("deletePokemon error", err);
