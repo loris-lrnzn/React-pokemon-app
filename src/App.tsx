@@ -9,6 +9,7 @@ import Teams from './pages/Teams'
 import PokemonDetail from './pages/PokemonDetail'
 import PokemonEdit from './pages/PokemonEdit'
 import PokemonCreate from './pages/PokemonCreate'
+import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/pokemonDetail/:id" element={<PokemonDetail />} />
           <Route path="/pokemonEdit/:id" element={<PokemonEdit />} />
           <Route path="/pokemonCreate" element={<PokemonCreate />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

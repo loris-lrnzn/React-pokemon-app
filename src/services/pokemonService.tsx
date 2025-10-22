@@ -4,8 +4,14 @@ const API_BASE = "http://127.0.0.1:8000/api/pokemons";
 
 export default class PokemonService {
     static async getPokemons(): Promise<Pokemon[]> {
+        console.log('token0', localStorage.getItem("authToken"));
         try {
-            const res = await fetch(API_BASE);
+            console.log('token', localStorage.getItem("authToken"));
+            const token = localStorage.getItem("authToken");
+            const res = await fetch(API_BASE, {
+                headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+            });
+            console.log('response', res);
             if (!res.ok) {
                 console.error("getPokemons failed", res.status);
                 return [];

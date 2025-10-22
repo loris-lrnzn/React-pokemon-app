@@ -11,6 +11,7 @@ export default function Teams() {
 
     const load = useCallback(async () => {
         const list = await PokemonService.getPokemons();
+        console.log('loaded pokemons', list);
         setVisiblePokemons(list);
     }, []);
 
