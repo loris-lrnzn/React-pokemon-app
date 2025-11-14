@@ -1,7 +1,6 @@
 import type Pokemon from "../models/pokemon";
-import AuthentificationService from "./authentificationService";
 
-const API_BASE = "http://127.0.0.1:8000/api/pokemons";
+const API_BASE = "https://pokemons-loris.mmi-stdie.fr/pokemon_backend/public/api/pokemons";
 
 export default class PokemonService {
     static async getPokemons(): Promise<Pokemon[]> {

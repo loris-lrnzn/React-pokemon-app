@@ -17,7 +17,7 @@ export default class AuthentificationService {
             // import.meta not supported in this runtime environment — fall through to default
         }
         // default to local Symfony backend
-        return 'http://127.0.0.1:8000';
+        return 'https://pokemons-loris.mmi-stdie.fr/pokemon_backend/public';
     })();
 
     static async login(email: string, password: string): Promise<boolean> {
